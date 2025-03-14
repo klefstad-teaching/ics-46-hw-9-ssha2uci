@@ -94,10 +94,7 @@ void print_path(const vector<int>& path, int total)
     }
     // Print the vertices in the path
     for (size_t i = 0; i < path.size(); i++) {
-        cout << path[i];
-        if (i + 1 < path.size()) {
-            cout << " ";
-        }
+        cout << path[i] << " ";
     }
     cout << endl;
     cout << "Total cost is " << total << endl;
