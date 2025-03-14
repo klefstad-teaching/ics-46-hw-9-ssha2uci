@@ -136,8 +136,9 @@ void print_word_ladder(const vector<string>& ladder) {
         return;
     }
     // Print each word separated by space (or " -> " if preferred)
+    cout << "Word ladder found: ";
     for (size_t i = 0; i < ladder.size(); i++) {
-        cout << "Word ladder found: " << ladder[i];
+        cout << ladder[i];
         cout << " ";
     }
     cout << endl;
