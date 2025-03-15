@@ -30,24 +30,20 @@ vector<int> dijkstra_shortest_path(const Graph& G, int source, vector<int>& prev
     priority_queue<Node, vector<Node>, greater<Node>> pq;
     pq.push(Node(source, 0));
 
-    // Core Dijkstra loop
     while (!pq.empty()) {
         Node current = pq.top();
         pq.pop();
 
         int u = current.vertex;
         if (visited[u]) {
-            // Already finalized the distance to u
             continue;
         }
         visited[u] = true;
 
-        // Relaxation step for each neighbor of u
         for (auto& edge : G[u]) {
             int v = edge.dst;
             int w = edge.weight;
 
-            // If we can improve the distance to v through u
             if (!visited[v] && dist[u] != INF && dist[u] + w < dist[v]) {
                 dist[v] = dist[u] + w;
                 previous[v] = u;

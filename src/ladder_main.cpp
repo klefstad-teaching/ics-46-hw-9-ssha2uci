@@ -6,7 +6,6 @@ using namespace std;
 
 int main(int argc, char* argv[]) {
     // If a dictionary file is provided on the command line, use it;
-    // otherwise default to "words.txt"
     string dictionaryFile = (argc > 1) ? argv[1] : "words.txt";
 
     // Load the dictionary

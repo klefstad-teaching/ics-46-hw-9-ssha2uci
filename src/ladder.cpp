@@ -10,20 +10,19 @@
 
 using namespace std;
 
-// Simple helper for printing an error message
+// error message
 void error(string word1, string word2, string msg) {
     cerr << "Error: " << msg << " (\"" << word1 << "\" -> \"" << word2 << "\")\n";
 }
 
 // Check if the edit distance between str1 and str2 is <= d
-// For this assignment, we only need d=1, but the code is written generally.
 bool edit_distance_within(const string& str1, const string& str2, int d) {
     // Quick check: if length difference is more than d, can't be within edit distance d
     if (abs((int)str1.size() - (int)str2.size()) > d) {
         return false;
     }
 
-    // Case 1: Same length
+    // case 1: same length
     if (str1.size() == str2.size()) {
         int mismatchCount = 0;
         for (size_t i = 0; i < str1.size(); i++) {
@@ -36,7 +35,7 @@ bool edit_distance_within(const string& str1, const string& str2, int d) {
         }
         return true;
     }
-    // Case 2: Lengths differ by exactly 1
+    // case 2: lengths differ by exactly 1
     else {
         const string& longer  = (str1.size() > str2.size()) ? str1 : str2;
         const string& shorter = (str1.size() > str2.size()) ? str2 : str1;
@@ -49,14 +48,12 @@ bool edit_distance_within(const string& str1, const string& str2, int d) {
                 if (mismatchCount > d) {
                     return false;
                 }
-                // Skip a char in the longer string
                 i++;
             } else {
                 i++;
                 j++;
             }
         }
-        // If there's a leftover char in the longer string
         if (i < (int)longer.size()) {
             mismatchCount++;
         }
@@ -64,7 +61,6 @@ bool edit_distance_within(const string& str1, const string& str2, int d) {
     }
 }
 
-// For this assignment, "adjacent" means edit distance <= 1
 bool is_adjacent(const string& word1, const string& word2) {
     return edit_distance_within(word1, word2, 1);
 }
@@ -87,7 +83,6 @@ vector<string> generate_word_ladder(const string& begin_word,
     set<string> visited;
     visited.insert(begin_word);
 
-    // Standard BFS
     while (!ladders.empty()) {
         vector<string> current_ladder = ladders.front();
         ladders.pop();
@@ -144,7 +139,7 @@ vector<string> generate_word_ladder(const string& begin_word,
     return {};
 }
 
-// Load all words from a file into a set (ignoring case by converting to lowercase)
+// load all words from a file into a set
 void load_words(set<string>& word_list, const string& file_name) {
     ifstream in(file_name);
     if (!in) {
@@ -153,7 +148,6 @@ void load_words(set<string>& word_list, const string& file_name) {
     }
     string word;
     while (in >> word) {
-        // Convert to lowercase for consistent comparisons
         for (auto &c : word) {
             c = tolower(static_cast<unsigned char>(c));
         }
@@ -162,13 +156,11 @@ void load_words(set<string>& word_list, const string& file_name) {
     in.close();
 }
 
-// Print the ladder in a single line or indicate that no ladder was found
 void print_word_ladder(const vector<string>& ladder) {
     if (ladder.empty()) {
         cout << "No word ladder found." << endl;
         return;
     }
-    // Print each word separated by space
     cout << "Word ladder found: ";
     for (size_t i = 0; i < ladder.size(); i++) {
         cout << ladder[i] << " ";
