@@ -4,6 +4,9 @@
 #include <queue>
 #include <algorithm>
 #include <cctype>
+#include <set>
+#include <vector>
+#include <string>
 
 using namespace std;
 
@@ -90,20 +93,50 @@ vector<string> generate_word_ladder(const string& begin_word,
         ladders.pop();
         string last_word = current_ladder.back();
 
-        // Check all dictionary words to see if they are neighbors
-        for (auto& w : word_list) {
-            if (visited.find(w) == visited.end() && is_adjacent(last_word, w)) {
+        // Generate candidate words from last_word via substitution, insertion, and deletion
+        set<string> candidates;
+
+        // Substitution: change each character to every other letter
+        for (size_t i = 0; i < last_word.size(); i++) {
+            string candidate = last_word;
+            for (char c = 'a'; c <= 'z'; c++) {
+                if (candidate[i] == c) continue;
+                candidate[i] = c;
+                candidates.insert(candidate);
+            }
+        }
+
+        // Insertion: insert a letter at every possible position
+        for (size_t i = 0; i <= last_word.size(); i++) {
+            for (char c = 'a'; c <= 'z'; c++) {
+                string candidate = last_word.substr(0, i) + c + last_word.substr(i);
+                candidates.insert(candidate);
+            }
+        }
+
+        // Deletion: remove one character at every position
+        if (!last_word.empty()) {
+            for (size_t i = 0; i < last_word.size(); i++) {
+                string candidate = last_word;
+                candidate.erase(i, 1);
+                candidates.insert(candidate);
+            }
+        }
+
+        // Process each candidate: if candidate is in the dictionary and not visited, use it.
+        for (const auto& cand : candidates) {
+            if (visited.find(cand) == visited.end() && word_list.find(cand) != word_list.end()) {
                 vector<string> new_ladder = current_ladder;
-                new_ladder.push_back(w);
+                new_ladder.push_back(cand);
 
                 // If we've reached the target, return immediately
-                if (w == end_word) {
+                if (cand == end_word) {
                     return new_ladder;
                 }
 
                 // Otherwise, enqueue and mark as visited
                 ladders.push(new_ladder);
-                visited.insert(w);
+                visited.insert(cand);
             }
         }
     }
@@ -135,11 +168,10 @@ void print_word_ladder(const vector<string>& ladder) {
         cout << "No word ladder found." << endl;
         return;
     }
-    // Print each word separated by space (or " -> " if preferred)
+    // Print each word separated by space
     cout << "Word ladder found: ";
     for (size_t i = 0; i < ladder.size(); i++) {
-        cout << ladder[i];
-        cout << " ";
+        cout << ladder[i] << " ";
     }
     cout << endl;
 }

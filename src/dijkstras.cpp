@@ -6,8 +6,6 @@
 
 using namespace std;
 
-// A small helper struct for the priority queue
-// storing (vertex, distance) and comparing by distance.
 struct Node {
     int vertex;
     int dist;
@@ -87,11 +85,6 @@ vector<int> extract_shortest_path(const vector<int>& distances,
 
 void print_path(const vector<int>& path, int total)
 {
-    // if (path.empty()) {
-    //     // If you want to show a "no path" message, do it here:
-    //     // cout << "No path found." << endl;
-    //     return;
-    // }
     // Print the vertices in the path
     for (size_t i = 0; i < path.size(); i++) {
         cout << path[i] << " ";
